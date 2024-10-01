@@ -1,52 +1,206 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simple Marker</title>
     <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBMLA-4L8ZtfBjHB3Wp-9vB83dyL4eQmbM&callback=initMap" defer></script>
     <style>
-        /* Always set the map height explicitly to define the size of the div element that contains the map. */
-        #map {
-            height: 100%;
-        }
-
-        /* Optional: Makes the sample page fill the window. */
         html, body {
             height: 100%;
             margin: 0;
             padding: 0;
+            display: flex;
+            flex-direction: column; /* Stack button above the container */
+        }
+
+        /* Button styling */
+        #start-button {
+            background-color: #007BFF; /* Bright blue color */
+            color: #fff; /* White text */
+            border: none; /* Remove default border */
+            padding: 15px 30px; /* Add padding for a larger button */
+            font-size: 1.2rem; /* Slightly larger font size */
+            font-weight: bold; /* Bold text */
+            border-radius: 8px; /* Rounded corners */
+            cursor: pointer; /* Pointer cursor on hover */
+            transition: background-color 0.3s, transform 0.2s; /* Smooth transitions */
+            margin: 20px auto; /* Center the button */
+        }
+
+        /* Hover state */
+        #start-button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        /* Active state (when the button is pressed) */
+        #start-button:active {
+            transform: scale(0.98); /* Slight shrink on click for feedback */
+        }
+
+        /* Focused state (when tabbed or clicked) */
+        #start-button:focus {
+            outline: none; /* Remove default outline */
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5); /* Custom outline for accessibility */
+        }
+
+        #container {
+            display: none; /* Initially hidden */
+            flex: 1; /* Take the remaining height */
+            flex-direction: row; /* Default to row layout for larger screens */
+        }
+
+        #map {
+            flex: 1; /* Map takes half of the container */
+            height: 100%; /* Ensure full height */
+        }
+
+        #options-div {
+            flex: 1; /* Options div takes the other half */
+            padding: 20px; /* Add some padding for better spacing */
+            display: flex;
+            flex-direction: column; /* Align form elements in a column */
+            align-items: flex-start; /* Align items to the start */
+        }
+
+        label, select {
+            margin: 5px 0; /* Add spacing between elements */
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            #container {
+                flex-direction: column; /* Stack map and options div on small screens */
+            }
+
+            #map, #options-div {
+                width: 100%; /* Ensure full width on small screens */
+            }
+
+            #options-div {
+                padding: 10px; /* Reduce padding on small screens */
+            }
         }
     </style>
     <script>
-        function initMap() {
-            // Try HTML5 geolocation to get the user's location
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    const userLocation = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude
-                    };
+        document.addEventListener("DOMContentLoaded", function() {
+            const startButton = document.createElement("button");
+    startButton.id = "start-button";
+    startButton.innerText = "Start Landsat";
+    document.body.insertBefore(startButton, document.getElementById("container"));
 
-                    // Create a map centered at the user's location
-                    const map = new google.maps.Map(document.getElementById('map'), {
-                        zoom: 14,
-                        center: userLocation
-                    });
+    startButton.onclick = function () {
+        document.getElementById("container").style.display = "flex"; // Show the container
+        this.style.display = "none"; // Hide the start button
+        let map;
+        let marker; 
 
-                    // Add a marker at the user's location
-                    const marker = new google.maps.Marker({
-                        position: userLocation,
-                        map: map,
-                        title: 'You are here!'
-                    });
-                }, function() {
-                    // Handle error if geolocation fails
-                    handleLocationError(true);
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                const userLocation = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+
+                // Create the map centered at the user's location
+                map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 14,
+                    center: userLocation
                 });
-            } else {
-                // Browser doesn't support Geolocation
-                handleLocationError(false);
-            }
+
+                // Add a marker at the user's location
+                marker = new google.maps.Marker({
+                    position: userLocation,
+                    map: map,
+                    title: 'You are here!'
+                });
+
+                // Add click event listener to the map
+                map.addListener('click', function(event) {
+                    placeMarker(event.latLng);
+                });
+            }, function(error) {
+                handleLocationError(true);
+            });
+        } else {
+            handleLocationError(false);
         }
+    };
+
+    const form = document.querySelector("#options-div form");
+
+    // Attach the submit event handler
+    form.addEventListener("submit", function(e) {
+        e.preventDefault(); // Prevent form submission
+
+        const formValue = new FormData(this);
+        
+        // Log form data to the console
+        for (const [key, value] of formValue.entries()) {
+            console.log(key, value);
+        }
+
+        // Here you can add your logic to process the form values
+    });
+        });
+
+        function chose() {
+            var langLatDiv = document.getElementById("lng-lat");
+            var nameDiv = document.getElementById("name");    
+            switch (document.getElementById('search-type').value) {
+                case 'lng-lat':
+                    langLatDiv.style.display = 'block';
+                    nameDiv.style.display = 'none';
+                    break;
+                case 'name':
+                    nameDiv.style.display = 'block';
+                    langLatDiv.style.display = 'none';
+                    break;
+                default:
+                    nameDiv.style.display = 'none';
+                    langLatDiv.style.display = 'none';
+            }
+        };
+
+        const form = document.querySelector("#options-div form");
+
+// Attach the submit event handler
+form.addEventListener("submit", function(e) {
+    e.preventDefault(); // Prevent form submission
+
+    // Get the form data
+    var formValue = new FormData(this);
+    
+    // Log form data to the console
+    for (var [key, value] of formValue.entries()) {
+        if(key!=null && value !=null){
+            console.log(typeof(key), typeof(value));
+        }
+    }
+
+    // Here you can add your logic to process the form values
+});
+
+
+        function placeMarker(location) {
+            // If a marker already exists, remove it
+            if (marker) {
+                marker.setMap(null);
+            }
+
+            // Create a new marker at the clicked location
+            marker = new google.maps.Marker({
+                position: location,
+                map: map,
+                title: `Selected Location: ${location.lat()}, ${location.lng()}`
+            });
+
+            // Display the selected latitude and longitude
+            alert(`Latitude: ${location.lat()}, Longitude: ${location.lng()}`);
+
+            // Optional: Log the coordinates to the console
+            console.log('Selected Location:', location.lat(), location.lng());
+        };
 
         function handleLocationError(browserHasGeolocation) {
             alert(browserHasGeolocation ?
@@ -56,6 +210,26 @@
     </script>
 </head>
 <body>
-    <div id="map"></div>
+    <div id="container">
+        <div id="map"></div>
+        <div id="options-div">
+            <label for="search-type">Search with</label>
+            <select name="search-type" id="search-type" oninput="chose()">
+                <option value="map">Choose on the map</option>
+                <option value="lng-lat">Longitude and Latitude</option>
+                <option value="name">Place Name</option>
+            </select>
+            <form>
+                <div id="lng-lat" style="display: none;">
+                    <label for="lat">Latitude</label><input type="text" name="lat">
+                    <label for="lng">Longitude</label><input type="text" name="lng">
+                </div>
+                <div id="name" style="display: none;">
+                    <label for="name">Place Name</label><input type="text" name="name">
+                </div>
+                <button type="submit">Search</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>

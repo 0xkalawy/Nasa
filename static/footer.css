@@ -41,3 +41,23 @@ footer .social-icons a {
 footer .social-icons a:hover {
     color: #ffdd57; /* Highlight color on hover */
 }
+
+/* Responsive design for smaller screens */
+@media (max-width: 600px) {
+    footer {
+        padding: 1rem; /* Reduce padding on smaller screens */
+    }
+
+    footer h2 {
+        font-size: 1.2rem; /* Adjust font size */
+    }
+
+    footer p {
+        font-size: 0.9rem; /* Smaller font for smaller screens */
+    }
+
+    footer .social-icons a {
+        font-size: 1.2rem; /* Reduce icon size on smaller screens */
+        margin: 0 0.3rem; /* Adjust margin for icons */
+    }
+}

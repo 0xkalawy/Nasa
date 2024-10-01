@@ -88,3 +88,33 @@ footer {
     width: 100%;
     bottom: 0;
 }
+
+/* Responsive design for smaller screens */
+@media (max-width: 600px) {
+    main {
+        padding: 1rem;
+    }
+
+    #about {
+        padding: 1rem;
+        max-width: 100%; /* Allow it to stretch fully on smaller screens */
+    }
+
+    #about h1, #about h2 {
+        font-size: 1.2rem; /* Adjust font size for smaller screens */
+    }
+
+    #about ul li h3 {
+        font-size: 1rem; /* Reduce heading size for team member names */
+    }
+
+    #about ul li p {
+        font-size: 0.9rem; /* Smaller font for text */
+    }
+
+    /* Adjust footer position for mobile */
+    footer {
+        position: static;
+        padding: 0.5rem;
+    }
+}
