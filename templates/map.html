@@ -12,6 +12,7 @@
             padding: 0;
             display: flex;
             flex-direction: column;
+            font-family: Arial, sans-serif;
         }
 
         #start-button {
@@ -57,10 +58,69 @@
             display: flex;
             flex-direction: column;
             align-items: flex-start;
+            background-color: #f8f9fa; /* Light background for contrast */
+            border-left: 1px solid #dee2e6; /* Subtle border for separation */
         }
 
-        label, select {
-            margin: 5px 0;
+        label {
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+
+        select,
+        input[type="text"],
+        input[type="number"] {
+            padding: 10px;
+            border: 1px solid #ced4da; /* Light border */
+            border-radius: 5px; /* Rounded corners */
+            font-size: 1rem;
+            width: 100%;
+            box-sizing: border-box; /* Include padding and border in the element's total width */
+        }
+
+        select:focus,
+        input[type="text"]:focus,
+        input[type="number"]:focus {
+            border-color: #007BFF; /* Highlight border on focus */
+            outline: none; /* Remove default outline */
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Add a subtle shadow */
+        }
+
+        button, 
+        #next-button {
+            background-color: #28a745; /* Green button */
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            margin-top: 10px; /* Space above button */
+        }
+
+        button:hover,
+        #next-button:hover {
+            background-color: #218838; /* Darker green on hover */
+        }
+
+        button:active,
+        #next-button:active {
+            transform: scale(0.98);
+        }
+
+        button:focus,
+        #next-button:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.5); /* Highlight on focus */
+        }
+
+        #result {
+            margin-top: 15px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #333; /* Dark text for visibility */
         }
 
         @media (max-width: 768px) {
@@ -76,11 +136,12 @@
                 padding: 10px;
             }
         }
+
+
     </style>
     <script>
         let map; // Declare map variable globally
         let marker; // Declare marker variable globally
-        const apiKey = "AIzaSyBMLA-4L8ZtfBjHB3Wp-9vB83dyL4eQmbM"; // Replace with your actual API key
 
         document.addEventListener("DOMContentLoaded", function() {
             const startButton = document.createElement("button");
@@ -112,10 +173,8 @@
                             title: 'You are here!'
                         });
 
-                        // Add click event listener to the map
-                        map.addListener('click', function(event) {
-                            placeMarker(event.latLng);
-                        });
+                        // Display the user's location coordinates
+                        document.getElementById('result').innerText = "Your location is:\n" + userLocation.lng + "\n" + userLocation.lat;
                     }, function(error) {
                         handleLocationError(true);
                     });
@@ -130,12 +189,18 @@
                 e.preventDefault(); // Prevent form submission
 
                 const formValue = new FormData(this);
-                
-                for (const [key, value] of formValue.entries()) {
-                    if(key != '' && value != '') {
-                        if(key == 'name') {
-                            searchLocation(value);
-                        }
+                const searchType = document.getElementById('search-type').value;
+
+                if (searchType === 'name') {
+                    const placeName = formValue.get('name');
+                    if (placeName) {
+                        searchLocation(placeName);
+                    }
+                } else if (searchType === 'lng-lat') {
+                    const latitude = parseFloat(formValue.get('latitude'));
+                    const longitude = parseFloat(formValue.get('longitude'));
+                    if (!isNaN(latitude) && !isNaN(longitude)) {
+                        searchByLatLng(latitude, longitude);
                     }
                 }
             });
@@ -175,6 +240,12 @@
             });
         }
 
+        function searchByLatLng(lat, lng) {
+            const location = new google.maps.LatLng(lat, lng);
+            map.setCenter(location);
+            placeMarker(location, `Latitude: ${lat}, Longitude: ${lng}`);
+        }
+
         function placeMarker(location, title = `Selected Location: ${location.lat()}, ${location.lng()}`) {
             // If a marker already exists, remove it
             if (marker) {
@@ -189,10 +260,8 @@
             });
 
             // Display the selected latitude and longitude
-            // alert(`Latitude: ${location.lat()}, Longitude: ${location.lng()}`);
-            document.getElementById('result').innerText = 'Selected Location:\n'+location.lat()+"\n"+location.lng() ;
-            document.getElementById('result').style.display = 'block' ;
-
+            document.getElementById('result').innerText = 'Selected Location:\n' + location.lat() + "\n" + location.lng();
+            document.getElementById('result').style.display = 'block';
         }
 
         function handleLocationError(browserHasGeolocation) {
@@ -223,8 +292,9 @@
                     <input type="number" id="longitude" name="longitude" step="any" />
                 </div>
                 <button type="submit">Search</button>
-                <p id="result" style="display: none;"></p>
+                <p id="result"></p>
             </form>
+            <button onclick="alert('not implemented yet')">Next</button>
         </div>
     </div>
 </body>
