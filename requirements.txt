@@ -1,6 +1,5 @@
 asn1crypto==1.5.1
 blinker==1.8.2
-Brlapi==0.8.5
 catfish==4.16.4
 certifi==2024.8.30
 chardet==5.2.0
