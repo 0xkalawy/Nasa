@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Marker</title>
+    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBMLA-4L8ZtfBjHB3Wp-9vB83dyL4eQmbM&callback=initMap" defer></script>
+    <style>
+        /* Always set the map height explicitly to define the size of the div element that contains the map. */
+        #map {
+            height: 100%;
+        }
+
+        /* Optional: Makes the sample page fill the window. */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    <script>
+        function initMap() {
+            // Try HTML5 geolocation to get the user's location
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const userLocation = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+
+                    // Create a map centered at the user's location
+                    const map = new google.maps.Map(document.getElementById('map'), {
+                        zoom: 14,
+                        center: userLocation
+                    });
+
+                    // Add a marker at the user's location
+                    const marker = new google.maps.Marker({
+                        position: userLocation,
+                        map: map,
+                        title: 'You are here!'
+                    });
+                }, function() {
+                    // Handle error if geolocation fails
+                    handleLocationError(true);
+                });
+            } else {
+                // Browser doesn't support Geolocation
+                handleLocationError(false);
+            }
+        }
+
+        function handleLocationError(browserHasGeolocation) {
+            alert(browserHasGeolocation ?
+                'Error: The Geolocation service failed.' :
+                'Error: Your browser doesn\'t support geolocation.');
+        }
+    </script>
+</head>
+<body>
+    <div id="map"></div>
+</body>
+</html>

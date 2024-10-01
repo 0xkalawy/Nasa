@@ -1,0 +1,90 @@
+/* General body styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+/* Header styling */
+header {
+    background-color: #002f4c; /* Dark blue, fitting the space theme */
+    color: #ffffff;
+    padding: 1rem;
+    text-align: center;
+}
+
+header nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+header nav ul li {
+    display: inline;
+    margin: 0 1rem;
+}
+
+header nav ul li a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+header nav ul li a:hover {
+    color: #a8d0e6; /* Light blue hover color */
+}
+
+/* Main section styling */
+main {
+    padding: 2rem;
+}
+
+#about {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    max-width: 800px;
+    padding: 2rem;
+}
+
+#about h1 {
+    color: #002f4c;
+}
+
+#about h2 {
+    color: #002f4c;
+}
+
+#about ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#about ul li {
+    margin-bottom: 1.5rem;
+}
+
+#about ul li h3 {
+    margin: 0;
+    color: #002f4c;
+}
+
+#about ul li p {
+    margin: 0.5rem 0;
+}
+
+/* Footer styling */
+footer {
+    background-color: #002f4c;
+    color: #ffffff;
+    text-align: center;
+    padding: 1rem;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}

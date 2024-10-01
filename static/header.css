@@ -1,0 +1,43 @@
+/* General header styling */
+header {
+    background-color: #002f4c; /* Dark blue, often associated with space themes */
+    color: #ffffff; /* White text for contrast */
+    padding: 1rem;
+    text-align: center;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 1rem;
+}
+
+nav ul li a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1rem; /* Slightly larger font for readability */
+    transition: color 0.3s, text-shadow 0.3s;
+}
+
+nav ul li a:hover {
+    color: #a8d0e6; /* Light blue color on hover */
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5); /* Subtle shadow for a more pronounced effect */
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 600px) {
+    nav ul {
+        text-align: center;
+    }
+
+    nav ul li {
+        display: block;
+        margin: 0.5rem 0;
+    }
+}

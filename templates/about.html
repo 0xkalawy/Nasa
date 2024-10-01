@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Us</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='about.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='header.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='footer.css') }}" />
+
+
+</head>
+<body>
+    {% include 'header.html'%}
+    <main>
+        <section id="about">
+            <h1>About Our Team</h1>
+            <p>We are a dedicated team of students working on an innovative project for the NASA Space Apps Challenge. Our goal is to develop a web app that interfaces with Landsat SR to provide users with notifications about satellite passes over specified locations.</p>
+            
+            <h2>Meet the Team</h2>
+            <ul>
+                <li>
+                    <h3>Mohamed Wagdy</h3>
+                    <p><strong>Role:</strong> Team Leader<br><strong>Background:</strong> Engineer Student</p>
+                </li>
+                <li>
+                    <h3>Sohair Wagdy</h3>
+                    <p><strong>Role:</strong> Member<br><strong>Background:</strong> STEM Student</p>
+                </li>
+                <li>
+                    <h3>Donia Rabea</h3>
+                    <p><strong>Role:</strong> Member<br><strong>Background:</strong> STEM Student</p>
+                </li>
+                <li>
+                    <h3>Menna Ayad</h3>
+                    <p><strong>Role:</strong> Member<br><strong>Background:</strong> STEM Student</p>
+                </li>
+                <li>
+                    <h3>Menna Wael</h3>
+                    <p><strong>Role:</strong> Member<br><strong>Background:</strong> STEM Student</p>
+                </li>
+            </ul>
+        </section>
+    </main>
+    {% include 'footer.html' %}
+</body>
+</html>

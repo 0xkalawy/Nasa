@@ -1,0 +1,43 @@
+/* Footer Styling */
+footer {
+    background: #002f4c; /* Dark background for contrast */
+    color: #ffffff; /* White text for readability */
+    padding: 2rem;
+    text-align: center;
+    border-top: 1px solid #003f6c; /* Slightly lighter border for a subtle separation */
+}
+
+footer h2 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+footer p {
+    margin: 0.5rem 0;
+    line-height: 1.6;
+}
+
+footer a {
+    color: #ffffff; /* White links */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+footer a:hover {
+    text-decoration: underline; /* Underline on hover for better visibility */
+}
+
+footer .social-icons {
+    margin-top: 1rem;
+}
+
+footer .social-icons a {
+    color: #ffffff; /* White icons */
+    margin: 0 0.5rem;
+    font-size: 1.5rem;
+    text-decoration: none;
+}
+
+footer .social-icons a:hover {
+    color: #ffdd57; /* Highlight color on hover */
+}

@@ -1,0 +1,47 @@
+/* General body styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+/* Main section styling */
+main {
+    padding: 2rem;
+}
+
+#services {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    max-width: 1200px;
+    padding: 2rem;
+}
+
+#services h1 {
+    color: #002f4c;
+}
+
+.service {
+    margin-bottom: 2rem;
+}
+
+.service img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.service h2 {
+    color: #002f4c;
+    margin: 1rem 0 0.5rem;
+}
+
+.service p {
+    margin: 0;
+    line-height: 1.6;
+}

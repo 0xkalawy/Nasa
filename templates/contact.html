@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Us</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='header.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='contact.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='footer.css') }}" />
+
+</head>
+<body>
+    {% include 'header.html' %}
+    <main>
+        <section id="contact">
+            <h1>Contact Us</h1>
+            <p>If you have any questions or need further information, please feel free to contact us using the form below or through the provided contact details.</p>
+            
+            <form action="#" method="post">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" placeholder="Your Name" required />
+                
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="Your Email" required />
+                
+                <label for="subject">Subject:</label>
+                <input type="text" id="subject" name="subject" placeholder="Subject" required />
+                
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" rows="4" placeholder="Your Message" required></textarea>
+                
+                <button type="submit">Send Message</button>
+            </form>
+            
+            <div id="contact-info">
+                <h2>Contact Information</h2>
+                <p><strong>Email:</strong> <a href="mailto:landsat@gmail.com">landsat@gmail.com</a></p>
+                <p><strong>Phone:</strong> <a href="tel:+01100000000">01100000000</a></p>
+            </div>
+        </section>
+    </main>
+    {% include 'footer.html' %}
+</body>
+</html>
