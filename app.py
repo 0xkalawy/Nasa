@@ -1,5 +1,5 @@
 from flask import Flask,render_template
-import landsatxplore
+from landsatxplore import __init__ as landsatexplore
 
 app = Flask(__name__)
 
