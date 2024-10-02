@@ -26,20 +26,30 @@ def fetch():
     # API Initialization
     api = API("kalawy", "1072003Mm123.")
     
+    # Get form data safely using .get() to avoid KeyError
+    dataset = request.form.get('dataset')
+    lat = request.form.get('latitude')
+    lng = request.form.get('longitude')
+    start_date = request.form.get('startDate')
+    end_date = request.form.get('endDate')
+
+    if not dataset or not lat or not lng or not start_date or not end_date:
+        return jsonify({"error": "Missing required parameters"}), 400
+
     # Search for Landsat scenes
     scenes = api.search(
-        dataset='landsat_tm_c2_l1',
-        latitude=float(request.form['lat']),
-        longitude=float(request.form['lng']),
-        start_date='1995-01-01',
-        end_date='1995-10-01',
+        dataset=dataset,
+        latitude=float(lat),
+        longitude=float(lng),
+        start_date=start_date,
+        end_date=end_date,
         max_cloud_cover=10
     )
 
     results = []
     # Process the results
     for scene in scenes:
-        results.append(scene['acquisition_date'].strftime('%Y-%m-%d'))
+        results.extend(scene)
         # Write scene footprints to disk
         fname = f"{scene['landsat_product_id']}.geojson"
         with open(fname, "w") as f:
@@ -49,6 +59,7 @@ def fetch():
     
     api.logout()
     return jsonify({"message": f"{results}"})
+
 
 if __name__ == "__main__":
     app.run("0.0.0.0", port=1900,debug=True)

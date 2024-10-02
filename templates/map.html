@@ -1,9 +1,107 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBMLA-4L8ZtfBjHB3Wp-9vB83dyL4eQmbM&libraries=places&callback=initMap" defer></script>
-    <script src="{{url_for('static',filename='map.js')}}"></script>
-</head>
-</html>
+<script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBMLA-4L8ZtfBjHB3Wp-9vB83dyL4eQmbM&libraries=places&callback=initMap" defer></script>
+<script>
+    let map, marker,userLocation, geocoder;
+    function initMap() {
+    // Initialize the map
+        map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 14,
+            center: { lat: 26.8206, lng: 30.8025 }
+        });
+        geocoder = new google.maps.Geocoder();
+    }
+
+    function mylocation() {
+            return new Promise((resolve, reject) => {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function(position) {
+                        const userLocation = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
+
+                        // Create a marker for the user's location
+                        marker = new google.maps.Marker({
+                            position: userLocation,
+                            map: map,
+                            title: 'You are here!'
+                        });
+
+                        // Center the map on the user's location
+                        map.setCenter(userLocation);
+                        resolve(userLocation); // Resolve the promise with userLocation
+                    }, function(error) {
+                        handleLocationError(true);
+                        reject(error); // Reject the promise if there's an error
+                    });
+                } else {
+                    handleLocationError(false);
+                    reject(new Error('Geolocation not supported')); // Reject if geolocation is not supported
+                }
+            });
+        }
+
+function handleLocationError(browserHasGeolocation) {
+    alert(browserHasGeolocation ?
+        'Error: The Geolocation service failed.' :
+        'Error: Your browser doesn\'t support geolocation.');
+}
+
+function searchLocation(query) {
+    return new Promise((resolve, reject) => {
+        const service = new google.maps.places.PlacesService(map);
+        service.textSearch({ query: query }, function(results, status) {
+            if (status === google.maps.places.PlacesServiceStatus.OK) {
+                const place = results[0]; // Get the first result
+                const location = place.geometry.location;
+
+                // Update map center and place marker
+                map.setCenter(location);
+                placeMarker(location, place.name);
+                resolve(location)
+            } else {
+                alert('Place not found: ' + status);
+                reject(new Error("Name Error please try with longitude and latitude"))
+            }
+        });
+    })
+}
+
+function searchByLatLng(lat, lng) {
+    const location = new google.maps.LatLng(lat, lng);
+    map.setCenter(location);
+    placeMarker(location, `Latitude: ${lat}, Longitude: ${lng}`);
+}
+
+function placeMarker(location, title = `Selected Location: ${location.lat()}, ${location.lng()}`) {
+    // If a marker already exists, remove it
+    if (marker) {
+        marker.setMap(null);
+    }
+
+    // Create a new marker at the clicked location
+    marker = new google.maps.Marker({
+        position: location,
+        map: map,
+        title: title
+    }); 
+    map.setCenter(location)    
+}
+
+function handleLocationError(browserHasGeolocation) {
+    alert(browserHasGeolocation ?
+        'Error: The Geolocation service failed.' :
+        'Error: Your browser doesn\'t support geolocation.');
+}
+
+function placeName(){
+    geocoder.geocode({ location: userLocation }, function(results, status) {
+        if (status === 'OK' && results[0]) {
+            const placeName = results[0].formatted_address; // Get the name of the place
+            document.getElementById("place-name").value = placeName; // Set place name in the input
+        } else {
+            alert('Geocoder failed due to: ' + status);
+        }
+    });
+
+}
+</script>

@@ -1,65 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% include 'map.html' %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Landsat</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='header.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='footer.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static',filename='landsat.css') }}">
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const form = document.querySelector("#options-div form");
-            form.addEventListener("submit", function(e) {
-                e.preventDefault(); // Prevent form submission
-                const formValue = new FormData(this);
-            });
-        });
-    </script>
 </head>
 <body>
     {% include 'header.html' %}
     <div id="container" style="display:flex; ">
-        <div id="map">{% include 'map.html' %}</div>
+        <div id="map"></div>
         <div id="options-div">
             <form>
                 <label for="place-name">Place Name:</label>
-                <input type="text" id="place-name" name="name" />
+                <input type="text" id="place-name" placeholder="Search for a place" name="name" onchange="event.preventDefault(); searchLocation(this.value).then(setLngLat);" />
                 <label for="latitude">Latitude:</label>
-                <input type="number" id="latitude" name="latitude" step="any" />
+                <input type="number" id="latitude" name="latitude" step="any" onchange="event.preventDefault(); placeMarker(new google.maps.LatLng(this.value, document.getElementById('longitude').value))"/>
                 <label for="longitude">Longitude:</label>
-                <input type="number" id="longitude" name="longitude" step="any" />
+                <input type="number" id="longitude" name="longitude" step="any" onchange="event.preventDefault(); placeMarker(new google.maps.LatLng(document.getElementById('latitude').value,this.value)) "/>
                 <label for="startDate">Start Date</label>
                 <input type="date" name="startDate">
+                <label for="endDate">End Date</label>
+                <input type="date" name="endDate">
+                <label for="dataset">Available dataset</label>
+                <select name="dataset">
+                    <option value="">Select a dataset</option>
+                    <option value="landsat_tm_c2_l1">Landsat 5 TM Collection 2 Level 1</option>
+                    <option value="landsat_tm_c2_l2">Landsat 5 TM Collection 2 Level 2</option>
+                    <option value="landsat_etm_c2_l1">Landsat 7 ETM+ Collection 2 Level 1</option>
+                    <option value="landsat_etm_c2_l2">Landsat 7 ETM+ Collection 2 Level 2</option>
+                    <option value="landsat_ot_c2_l1">Landsat 8 Collection 2 Level 1 & Landsat 9 Collection 2 Level 1</option>
+                    <option value="landsat_ot_c2_l2">Landsat 8 Collection 2 Level 1 & Landsat 9 Collection 2 Level 2</option>
+                </select>
                 <button type="submit">Search</button>
+                <button onclick="event.preventDefault(); mylocation().then(setLngLat);">My Location</button>
             </form>
             <div id="result">
-                <div id="loader" style="display: none;"></div> <!-- Circular loader -->
-                <select name="date" id="date">
-                    
-                </select>
+                <div id="loader" style="opacity: 0%;"></div> <!-- Circular loader -->
             </div>
         </div>
     </div>
     {% include 'footer.html' %}
-
 </body>
 <script>
-    document.getElementById("next").onclick = function(e){
-        e.preventDefault()
-        document.getElementById("loader").style.display="block"
-        var xhr = new XMLHttpRequest()
-        xhr.open("POST","/fetch");
-        xhr.onreadystatechange = function(){
-            if(this.readyState == 4){
-                document.getElementById("loader").style.display="none"
-                document.getElementById("result").innerText = this.responseText
-                document.getElementById("next").style.display = "none"
+    
+    document.addEventListener("DOMContentLoaded", function() {
+        
+        const form = document.querySelector("#options-div form");
+        form.addEventListener("submit", function(e) {
+            e.preventDefault(); // Prevent form submission
+            const formValue = new FormData(this);
+            document.getElementById("loader").style.display="block"
+            var xhr = new XMLHttpRequest()
+            xhr.open("POST","/fetch");
+            xhr.onreadystatechange = function(){
+                if(this.readyState == 4){
+                    document.getElementById("result").innerText = this.responseText
+                }
             }
-        }
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.setRequestHeader('User-Agent',"curl")
-        xhr.send("lng="+lng+"&lat="+lat)
+            xhr.send(formValue);
+        });
+    });
+    function setLngLat(){
+        document.getElementById("longitude").value = marker.position.lng();
+        document.getElementById("latitude").value = marker.position.lat();
     }
 </script>
 </html>
