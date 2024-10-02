@@ -116,7 +116,7 @@
             box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.5); /* Highlight on focus */
         }
 
-        #result {
+        #placeLngLat {
             margin-top: 15px;
             font-size: 1.1rem;
             font-weight: bold;
@@ -136,13 +136,23 @@
                 padding: 10px;
             }
         }
+        #loader {
+            border: 16px solid #f3f3f3; /* Light grey */
+            border-top: 16px solid #3498db; /* Blue */
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+        }
 
-
+        /* Spinner animation */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
     <script>
-        let map; // Declare map variable globally
-        let marker; // Declare marker variable globally
-
+        let map, marker, lng, lat;
         document.addEventListener("DOMContentLoaded", function() {
             const startButton = document.createElement("button");
             startButton.id = "start-button";
@@ -174,7 +184,9 @@
                         });
 
                         // Display the user's location coordinates
-                        document.getElementById('result').innerText = "Your location is:\n" + userLocation.lng + "\n" + userLocation.lat;
+                        document.getElementById('placeLngLat').innerText = "Your location is:\n" + userLocation.lng + "\n" + userLocation.lat;
+                        lng = userLocation.lng;
+                        lat = userLocation.lat;
                     }, function(error) {
                         handleLocationError(true);
                     });
@@ -260,8 +272,9 @@
             });
 
             // Display the selected latitude and longitude
-            document.getElementById('result').innerText = 'Selected Location:\n' + location.lat() + "\n" + location.lng();
-            document.getElementById('result').style.display = 'block';
+            document.getElementById('placeLngLat').innerText = 'Selected Location:\n' + location.lat() + "\n" + location.lng();
+            lng = location.lng();
+            lat = location.lat();            
         }
 
         function handleLocationError(browserHasGeolocation) {
@@ -292,10 +305,58 @@
                     <input type="number" id="longitude" name="longitude" step="any" />
                 </div>
                 <button type="submit">Search</button>
-                <p id="result"></p>
+                <p id="placeLngLat"></p>
             </form>
-            <button onclick="alert('not implemented yet')">Next</button>
+            <button id="next">Next</button>
+            <div id="result">
+                <div id="loader" style="display: none;"></div> <!-- Circular loader -->
+            </div>
         </div>
     </div>
 </body>
+<script>
+    move()
+    document.getElementById("next").onclick = function(e){
+        e.preventDefault()
+        document.getElementById("loader").style.display="block"
+        var xhr = new XMLHttpRequest()
+        xhr.open("POST","/fetch");
+        xhr.onreadystatechange = function(){
+            if(this.readyState == 4){
+                document.getElementById("loader").style.display="none"
+                document.getElementById("result").innerText = this.responseText
+            }
+        }
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.setRequestHeader('User-Agent',"curl")
+        xhr.send("lng="+lng+"&lat="+lat)
+    }
+
+    var i = 0;
+        
+        // Progress bar function
+        function move() {
+            var elem = document.getElementById("myBar");
+            if (elem) { // Check if the progress bar element exists
+                if (i == 0) {
+                    i = 1;
+                    var width = 1;
+                    var id = setInterval(frame, 10); // Update every 10ms
+                    
+                    // Frame function updates the progress bar
+                    function frame() {
+                        if (width >= 100) {
+                            clearInterval(id);
+                            i = 0;
+                        } else {
+                            width++;
+                            elem.style.width = width + "%";
+                        }
+                    }
+                }
+            } else {
+                console.log("Progress bar element not found");
+            }
+        }
+</script>
 </html>

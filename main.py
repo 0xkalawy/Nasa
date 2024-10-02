@@ -29,18 +29,18 @@ def fetch():
     # Search for Landsat scenes
     scenes = api.search(
         dataset='landsat_tm_c2_l1',
-        latitude=50.85,
-        longitude=-4.35,
+        latitude=float(request.form['lat']),
+        longitude=float(request.form['lng']),
         start_date='1995-01-01',
         end_date='1995-10-01',
         max_cloud_cover=10
     )
     
     print(f"{len(scenes)} scenes found.")
-    
+    results = []
     # Process the results
     for scene in scenes:
-        print(scene['acquisition_date'].strftime('%Y-%m-%d'))
+        results.append(scene['acquisition_date'].strftime('%Y-%m-%d'))
         # Write scene footprints to disk
         fname = f"{scene['landsat_product_id']}.geojson"
         with open(fname, "w") as f:
@@ -50,7 +50,7 @@ def fetch():
         os.remove(fname)
     
     api.logout()
-    return jsonify({"message": f"{len(scenes)} scenes processed."})
+    return jsonify({"message": f"{results}"})
 
 if __name__ == "__main__":
-    app.run("0.0.0.0", port=1900)
+    app.run("0.0.0.0", port=1900,debug=True)
