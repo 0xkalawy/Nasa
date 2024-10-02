@@ -94,12 +94,13 @@ function handleLocationError(browserHasGeolocation) {
 }
 
 function placeName(){
-    geocoder.geocode({ location: userLocation }, function(results, status) {
+    geocoder.geocode({ location: new google.maps.LatLng(document.getElementById("latitude").value,document.getElementById("longitude").value) }, function(results, status) {
         if (status === 'OK' && results[0]) {
             const placeName = results[0].formatted_address; // Get the name of the place
             document.getElementById("place-name").value = placeName; // Set place name in the input
+            document.getElementById('result').innerText = '';
         } else {
-            alert('Geocoder failed due to: ' + status);
+            document.getElementById('result').innerText = 'Unable to get place name due to: ' + status;
         }
     });
 
