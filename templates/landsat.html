@@ -39,8 +39,8 @@
                 <button onclick="event.preventDefault(); mylocation().then(setLngLat);">My Location</button>
             </form>
             <div id="result">
-                <div id="loader" style="opacity: 0%;"></div> <!-- Circular loader -->
-            </div>
+                <div id="loader" style="display: none;"></div> <!-- Circular loader -->
+            </div>            
         </div>
     </div>
     {% include 'footer.html' %}
@@ -48,22 +48,34 @@
 <script>
     
     document.addEventListener("DOMContentLoaded", function() {
-        
-        const form = document.querySelector("#options-div form");
-        form.addEventListener("submit", function(e) {
-            e.preventDefault(); // Prevent form submission
-            const formValue = new FormData(this);
-            document.getElementById("loader").style.display="block"
-            var xhr = new XMLHttpRequest()
-            xhr.open("POST","/fetch");
-            xhr.onreadystatechange = function(){
-                if(this.readyState == 4){
-                    document.getElementById("result").innerText = this.responseText
-                }
+    const form = document.querySelector("#options-div form");
+    const loader = document.getElementById("loader");
+
+    form.addEventListener("submit", function(e) {
+        e.preventDefault(); // Prevent form submission
+        document.getElementById("result").innerText = ""; // Clear previous results
+        const formValue = new FormData(this);
+        // Show the loader
+        loader.style.display = "block";
+        loader.style.zIndex = -1;
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/fetch");
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status==200) {
+                // Hide loader after the response is received
+                loader.style.display = "none";
+                
+                // Display the result
+                document.getElementById("result").innerText = this.responseText;
             }
-            xhr.send(formValue);
-        });
+        };
+
+        xhr.send(formValue);
     });
+});
+
+
+
     function setLngLat(){
         document.getElementById("longitude").value = marker.position.lng();
         document.getElementById("latitude").value = marker.position.lat();

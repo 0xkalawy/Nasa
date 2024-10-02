@@ -49,7 +49,7 @@ def fetch():
     results = []
     # Process the results
     for scene in scenes:
-        results.extend(scene)
+        results.extend(scene.values())
         # Write scene footprints to disk
         fname = f"{scene['landsat_product_id']}.geojson"
         with open(fname, "w") as f:
