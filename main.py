@@ -35,8 +35,7 @@ def fetch():
         end_date='1995-10-01',
         max_cloud_cover=10
     )
-    
-    print(f"{len(scenes)} scenes found.")
+
     results = []
     # Process the results
     for scene in scenes:
@@ -46,7 +45,6 @@ def fetch():
         with open(fname, "w") as f:
             json.dump(scene['spatial_coverage'].__geo_interface__, f)
         
-        # Remove file using os.remove() for cross-platform compatibility
         os.remove(fname)
     
     api.logout()

@@ -1,0 +1,114 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
+}
+
+#container {
+    display: none;
+    flex: 1;
+    flex-direction: row;
+}
+
+#map {
+    flex: 1;
+    height: 100%;
+}
+
+#options-div {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: #f8f9fa; /* Light background for contrast */
+    border-left: 1px solid #dee2e6; /* Subtle border for separation */
+}
+
+label {
+    margin: 10px 0 5px;
+    font-weight: bold;
+}
+
+select,
+input[type="text"],
+input[type="number"] {
+    padding: 10px;
+    border: 1px solid #ced4da; /* Light border */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box; /* Include padding and border in the element's total width */
+}
+
+select:focus,
+input[type="text"]:focus,
+input[type="number"]:focus {
+    border-color: #007BFF; /* Highlight border on focus */
+    outline: none; /* Remove default outline */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Add a subtle shadow */
+}
+
+button{
+    background-color: #28a745; /* Green button */
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    margin-top: 10px; /* Space above button */
+}
+
+button:hover{
+    background-color: #218838; /* Darker green on hover */
+}
+
+button:active{
+    transform: scale(0.98);
+}
+
+button:focus{
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.5); /* Highlight on focus */
+}
+
+#placeLngLat {
+    margin-top: 15px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #333; /* Dark text for visibility */
+}
+
+@media (max-width: 768px) {
+    #container {
+        flex-direction: column;
+    }
+
+    #map, #options-div {
+        width: 100%;
+    }
+
+    #options-div {
+        padding: 10px;
+    }
+}
+#loader {
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+}
+
+/* Spinner animation */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

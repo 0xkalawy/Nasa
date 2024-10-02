@@ -3,13 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landsat</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='header.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='footer.css') }}" />
-    <title>Landsat</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='landsat.css') }}">
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const form = document.querySelector("#options-div form");
+            form.addEventListener("submit", function(e) {
+                e.preventDefault(); // Prevent form submission
+                const formValue = new FormData(this);
+            });
+        });
+    </script>
 </head>
 <body>
     {% include 'header.html' %}
-    {% include 'map.html' %}
-    {% include 'footer.html'%}
+    <div id="container" style="display:flex; ">
+        <div id="map">{% include 'map.html' %}</div>
+        <div id="options-div">
+            <form>
+                <label for="place-name">Place Name:</label>
+                <input type="text" id="place-name" name="name" />
+                <label for="latitude">Latitude:</label>
+                <input type="number" id="latitude" name="latitude" step="any" />
+                <label for="longitude">Longitude:</label>
+                <input type="number" id="longitude" name="longitude" step="any" />
+                <label for="startDate">Start Date</label>
+                <input type="date" name="startDate">
+                <button type="submit">Search</button>
+            </form>
+            <div id="result">
+                <div id="loader" style="display: none;"></div> <!-- Circular loader -->
+                <select name="date" id="date">
+                    
+                </select>
+            </div>
+        </div>
+    </div>
+    {% include 'footer.html' %}
+
 </body>
+<script>
+    document.getElementById("next").onclick = function(e){
+        e.preventDefault()
+        document.getElementById("loader").style.display="block"
+        var xhr = new XMLHttpRequest()
+        xhr.open("POST","/fetch");
+        xhr.onreadystatechange = function(){
+            if(this.readyState == 4){
+                document.getElementById("loader").style.display="none"
+                document.getElementById("result").innerText = this.responseText
+                document.getElementById("next").style.display = "none"
+            }
+        }
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.setRequestHeader('User-Agent',"curl")
+        xhr.send("lng="+lng+"&lat="+lat)
+    }
+</script>
 </html>
