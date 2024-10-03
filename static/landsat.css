@@ -8,12 +8,12 @@ html, body {
 }
 
 #container {
-    display: none;
+    display: flex;
     flex: 1;
     flex-direction: row;
 }
 
-#map {
+#mapDiv {
     flex: 1;
     height: 100%;
 }
@@ -52,7 +52,7 @@ input[type="number"]:focus {
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Add a subtle shadow */
 }
 
-button{
+button {
     background-color: #28a745; /* Green button */
     color: #fff;
     border: none;
@@ -65,15 +65,15 @@ button{
     margin-top: 10px; /* Space above button */
 }
 
-button:hover{
+button:hover {
     background-color: #218838; /* Darker green on hover */
 }
 
-button:active{
+button:active {
     transform: scale(0.98);
 }
 
-button:focus{
+button:focus {
     outline: none;
     box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.5); /* Highlight on focus */
 }
@@ -90,14 +90,28 @@ button:focus{
         flex-direction: column;
     }
 
-    #map, #options-div {
+    #mapDiv, #options-div {
         width: 100%;
     }
 
     #options-div {
         padding: 10px;
     }
+
+    button {
+        padding: 15px 10px; /* Larger tap target for mobile */
+        font-size: 1.2rem; /* Slightly larger text */
+    }
+
+    input, select {
+        font-size: 1.1rem; /* Slightly larger input text for mobile */
+    }
+
+    label {
+        font-size: 1.1rem; /* Larger labels for better readability */
+    }
 }
+
 #loader {
     border: 16px solid #f3f3f3; /* Light grey */
     border-top: 16px solid #3498db; /* Blue */
@@ -113,3 +127,36 @@ button:focus{
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+        /* Media query for mobile devices */
+        @media (max-width: 768px) {
+            #container {
+                flex-direction: column;
+            }
+
+            #mapDiv {
+                width: 100%;
+                height: 50%; /* Reduce map height on mobile */
+            }
+
+            #options-div {
+                width: 100%;
+                padding: 15px;
+            }
+
+            form {
+                width: 100%;
+            }
+        }
+
+        /* Media query for small mobile devices */
+        @media (max-width: 480px) {
+            button {
+                padding: 8px;
+                font-size: 0.9rem;
+            }
+
+            label, input, select {
+                font-size: 0.9rem;
+            }
+        }

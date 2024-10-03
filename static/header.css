@@ -4,16 +4,18 @@ header {
     color: #ffffff; /* White text for contrast */
     padding: 1rem;
     text-align: center;
+    position: relative;
 }
 
 nav ul {
     list-style: none;
     padding: 0;
     margin: 0;
+    display: flex;
+    justify-content: center;
 }
 
 nav ul li {
-    display: inline;
     margin: 0 1rem;
 }
 
@@ -30,16 +32,35 @@ nav ul li a:hover {
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5); /* Subtle shadow for a more pronounced effect */
 }
 
-/* Responsive design for smaller screens */
+/* Burger menu icon */
+.burger-menu {
+    display: none;
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    cursor: pointer;
+    font-size: 1.5rem;
+}
+
+/* Responsive design for Android devices (small screens) */
 @media (max-width: 600px) {
     nav ul {
+        display: none;
+        flex-direction: column;
         text-align: center;
-        padding: 0;
+        width: 100%;
+        background-color: #002f4c;
+        position: absolute;
+        top: 100%;
+        left: 0;
+    }
+
+    nav ul.show {
+        display: flex;
     }
 
     nav ul li {
-        display: block;
-        margin: 0.5rem 0;
+        margin: 1rem 0;
     }
 
     nav ul li a {
@@ -49,5 +70,8 @@ nav ul li a:hover {
     header {
         padding: 0.5rem;
     }
-}
 
+    .burger-menu {
+        display: block;
+    }
+}

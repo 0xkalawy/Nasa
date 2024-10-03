@@ -1,0 +1,123 @@
+<div class="container">
+  <h1>Landsat Data Overview</h1>
+  <h2>Metadata</h2>
+  <div class="data-card">
+    <h3>Scene ID: <span id="scene-id">{{landsat_scene_id}}</span></h3>
+    <p><b>Display ID:</b> <span id="display_id">{{display_id}}</span></p>
+    <p><b>Landsat Product ID:</b> <span id="landsat_product_id">{{landsat_product_id}}</span></p>
+    <p><b>Acquisition Date:</b> <span id="acquisition-date">{{acquisition_date.strftime("%Y-%d-%m")}}</span></p>
+    <p><b>Date Product Generated:</b> <span id="date_product_generated">{{date_product_generated.strftime("%Y-%d-%m")}}</span></p>
+    <p><b>Start Time:</b> <span id="start_time">{{start_time.strftime("%Y-%d-%m")}}</span></p>
+    <p><b>End Time:</b> <span id="stop_time">{{stop_time.strftime("%Y-%d-%m")}}</span></p>
+    <p><b>Publish Date:</b> <span id="publish_date">{{publish_date.strftime("%Y-%d-%m")}}</span></p>
+    <p><b>Image Quality:</b> <span id="image-quality">{{image_quality}}</span></p>
+    <p><b>Station ID:</b> <span id="station_id">{{station_id}}</span></p>
+    <p><b>Collection Number:</b> <span id="collection_number">{{collection_number}}</span></p>
+    <p><b>Sensor Mode: </b><span id="sensor_mode">{{sensor_mode}}</span></p>
+    <p><b>Processing Software Version: </b><span id="processing_software_version">{{processing_software_version}}</span></p>
+    <p><b>Cloud Cover: </b><span id="cloud_cover">{{cloud_cover}}</span>
+    <p><b>Land Cloud Cover: </b><span id="land_cloud_cover">{{land_cloud_cover}}</span>
+    <p><b>Sensor ID: </b><span id="sensor_id">{{sensor_id}}</span>
+    <p><b>UL Corner Lat: </b><span id="corner_upper_left_latitude">{{corner_upper_left_latitude}}</span>
+    <p><b>UL Corner Long: </b><span id="corner_upper_left_longitude">{{corner_upper_left_longitude}}</span>
+    <p><b>UR Corner Lat: </b><span id="corner_upper_right_latitude">{{corner_upper_right_latitude}}</span>
+    <p><b>UR Corner Long: </b><span id="corner_upper_right_longitude">{{corner_upper_right_longitude}}</span>
+    <p><b>LL Corner Lat: </b><span id="corner_lower_left_latitude">{{corner_lower_left_latitude}}</span>
+    <p><b>LL Corner Long: </b><span id="corner_lower_left_longitude">{{corner_lower_left_longitude}}</span>
+    <p><b>LR Corner Lat: </b><span id="corner_lower_right_latitude">{{corner_lower_right_latitude}}</span>
+    <p><b>LR Corner Long: </b><span id="corner_lower_right_longitude">{{corner_lower_right_longitude}}</span>
+    <p><b>Geometric RMSE Model: </b><span id="geometric_rmse_model">{{geometric_rmse_model}}</span>
+    <p><b>Geometric RMSE Model X: </b><span id="geometric_rmse_model_x">{{geometric_rmse_model_x}}</span>
+    <p><b>Geometric RMSE Model Y: </b><span id="geometric_rmse_model_y">{{geometric_rmse_model_y}}</span>
+    <p><b>Landsat Product ID: </b><span id="landsat_product_id">{{landsat_product_id}}</span>
+    <p><b>Day-Night Indicator: </b><span id="day-night_indicator">{{day_night_indicator}}</span>
+    <p><b>Data Anomaly: </b><span id="data_anomaly">{{data_anomaly}}</span></p>
+    <p><b>Processing Software Version: </b><span id="processing_software_version">{{processing_software_version}}</span></p>
+    <p><b>Data Type: </b><span id="data_type">{{data_type}}</span></p>
+    <p><b>Satellite: </b><span id="satellite">{{satellite}}</span></p>
+    <p><b>Reflective Samples: </b><span id="reflective_samples">{{reflective_samples}}</span></p>
+    <p><b>Thermal Lines: </b><span id="thermal_lines">{{thermal_lines}}</span></p>
+    <p><b>Thermal Samples: </b><span id="thermal_samples">{{thermal_samples}}</span></p>
+    <p><b>UTM Zone: </b><span id="utm_zone">{{utm_zone}}</span></p>
+    <p><b>Datum: </b><span id="datum">{{datum}}</span></p>
+    <p><b>Ellipsoid: </b><span id="ellipsoid">{{ellipsoid}}</span></p>
+    <p><b>Grid Cell Size Reflective: </b><span id="grid_cell_size_reflective">{{grid_cell_size_reflective}}</span></p>
+    <p><b>Grid Cell Size Thermal: </b><span id="grid_cell_size_thermal">{{grid_cell_size_thermal}}</span></p>
+  </div>
+  <h2>Data</h2>
+  <table id="data-table">
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>WRS Path</b></td>
+        <td>{{wrs_path}}</td>
+      </tr>
+      <tr>
+        <td><b>WRS Row</b></td>
+        <td>{{wrs_row}}</td>
+      </tr>
+      <tr>
+        <td><b>Sun Elevation</b></td>
+        <td>{{sun_elevation}}°</td>
+      </tr>
+      <tr>
+        <td><b>Sun Azimuth</b></td>
+        <td>{{sun_azimuth}}°</td>
+      </tr>
+      <tr>
+        <td><b>Ground Control Points Model</b></td>
+        <td>{{ground_control_points_model}}</td>
+      </tr>
+      <tr>
+        <td><b>Scene Center Latitude</b></td>
+        <td>{{scene_center_latitude}}</td>
+      </tr>
+      <tr>
+        <td><b>Scene Center Longitude</b></td>
+        <td>{{scene_center_longitude}}</td>
+      </tr>
+      <tr>
+        <td><b>Spatial Bounds</b></td>
+        <td>{{spatial_bounds}}</td>
+      </tr>
+      <tr>
+        <td><b>temporal_coverage</b></td>
+        <td>{{temporal_coverage}}</td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>
+
+</body>
+<style>
+  .container {
+    padding: 20px;
+    max-width: 800px;
+    margin: auto;
+  }
+
+  .data-card {
+    background: #f4f4f4;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th,
+  td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+</style>
