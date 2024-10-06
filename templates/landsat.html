@@ -14,11 +14,11 @@
             <div id="options-div">
                 <form>
                     <label for="place-name">Place Name:</label>
-                    <input type="text" id="place-name" placeholder="Search for a place" name="name" onchange="event.preventDefault(); searchLocation(this.value).then(setLngLat);" />
+                    <input type="text" id="place-name" placeholder="Search for a place" name="name" onchange="searchLocation(this.value).then(setLngLat);" />
                     <label for="latitude">Latitude:</label>
-                    <input type="number" id="latitude" name="latitude" step="any" onchange="event.preventDefault(); placeMarker(new google.maps.LatLng(this.value, document.getElementById('longitude').value)); placeName()"/>
+                    <input type="number" id="latitude" name="latitude" step="any" onchange="placeMarker(new google.maps.LatLng(this.value, document.getElementById('longitude').value)); placeName()"/>
                     <label for="longitude">Longitude:</label>
-                    <input type="number" id="longitude" name="longitude" step="any" onchange="event.preventDefault(); placeMarker(new google.maps.LatLng(document.getElementById('latitude').value,this.value)); placeName()"/>
+                    <input type="number" id="longitude" name="longitude" step="any" onchange="placeMarker(new google.maps.LatLng(document.getElementById('latitude').value,this.value)); placeName()"/>
                     <label for="startDate">Start Date</label>
                     <input type="date" name="startDate" min="1972-01-01">
                     <label for="endDate">End Date</label>
@@ -33,35 +33,25 @@
                         <option value="landsat_ot_c2_l1">Landsat 8 Collection 2 Level 1 & Landsat 9 Collection 2 Level 1</option>
                         <option value="landsat_ot_c2_l2">Landsat 8 Collection 2 Level 1 & Landsat 9 Collection 2 Level 2</option>
                     </select>
-                    <button type="submit">Search</button>
-                    <button onclick="event.preventDefault(); mylocation().then(setLngLat); placeName();">My Location</button>
+                    <button type="submit" onclick="document.getElementById('loader').style.display = 'block'">Search</button>
+                    <button onclick="mylocation().then(setLngLat); placeName();">My Location</button>
+                    <button type="button" onclick="event.preventDefault(); when();">When Landsat passes above</button>
                 </form>
                 <div id="result">
-                    <div id="loader" style="display: none;"></div> <!-- Circular loader -->
                 </div>
+            <div id="loader" style="display: none;"></div> <!-- Circular loader -->
             </div>
         </div>
         {% include 'footer.html' %}
     </body>
     <script>
-        
-        document.addEventListener("DOMContentLoaded", function() {
-            const form = document.querySelector("#options-div form");
-            const loader = document.getElementById("loader");
-
-            form.addEventListener("submit", function(e) {
+        document.forms[0].onsubmit = function(e) {
                 e.preventDefault(); // Prevent form submission
-                document.getElementById("result").innerHTML = ""; // Clear previous results
                 const formValue = new FormData(this);
-                // Show the loader
-                loader.style.display = "block";
-                loader.style.zIndex = -1;
                 var xhr = new XMLHttpRequest();
-                xhr.open("POST", "/fetch");
                 xhr.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status==200) {
                         // Hide loader after the response is received
-                        loader.style.display = "none";
                         var response = JSON.parse(this.responseText)
                         const polygonCoords = []
                         response['coords'].forEach(element => {
@@ -81,17 +71,35 @@
                             bounds.extend(new google.maps.LatLng(coord.lat, coord.lng));
                         });
                         map.fitBounds(bounds);
-                        map.setCenter(polygonCoords)
+                        if (polygonCoords.length > 0) {
+                            map.setCenter(new google.maps.LatLng(polygonCoords[0].lat, polygonCoords[0].lng));
+                        }
                         document.getElementById("result").innerHTML = response['html'];
+                        document.getElementById("loader").style.display = "none";
+                    }else if(this.status == 400){
+                        document.getElementById("result").innerHTML = JSON.parse(this.responseText)['error'];
+                        document.getElementById("loader").style.display = "none";
                     }
                 };
-
+                xhr.open("POST", "/fetch");
                 xhr.send(formValue);
-            });
-    });
+            };
         function setLngLat(){
             document.getElementById("longitude").value = marker.position.lng();
             document.getElementById("latitude").value = marker.position.lat();
+        }
+        function when(){
+            document.getElementById("loader").style.display = "block"
+            var data = new FormData(document.forms[0])
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function(){
+                if(this.readyState == 4 && this.status ==200){
+                    document.getElementById("result").innerText = this.responseText
+                    document.getElementById("loader").style.display = "none"
+                }
+            }
+            xhr.open("POST","/when");
+            xhr.send(data)
         }
     </script>
     {% include 'map.html' %}
